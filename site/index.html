@@ -33,38 +33,37 @@ body {
 }
 
 .intro {
-  max-width: 1000px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 .intro h1 {
-  font-size: 22px;
+  font-size: 26px;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
   display: flex;
   align-items: center;
   gap: 14px;
   flex-wrap: wrap;
 }
 .intro h1 a {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 400;
   color: var(--fg2);
   text-decoration: none;
 }
 .intro h1 a:hover { text-decoration: underline; }
 .intro p {
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--fg2);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 .intro a { color: var(--fg2); }
 .intro strong, .intro b { color: var(--fg); font-weight: 600; }
 
-.intro details { margin: 8px 0; }
+.intro details { margin: 10px 0; }
 .intro summary {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--fg2);
   cursor: pointer;
   user-select: none;
@@ -271,6 +270,7 @@ Respond with ONLY a JSON object in this exact format, no other text:
     <div class="stat-section" id="block5"></div>
     <div class="stat-section" id="block6"></div>
     <div class="stat-section" id="block7"></div>
+    <div class="stat-section" id="block8"></div>
   </div>
 </div>
 
@@ -681,6 +681,13 @@ function updateOutlookStats(totalJobs) {
   document.getElementById("block7").innerHTML = `<h3>Declining jobs</h3>
     <div class="stat-big" style="color:${outlookColor(-5, 1)}">${(declining / 1e6).toFixed(1)}M</div>
     <div class="stat-label">negative outlook</div>`;
+
+  // Impact: growing jobs
+  let growing = 0;
+  for (const d of data) { if (d.outlook != null && d.outlook > 0 && d.jobs) growing += d.jobs; }
+  document.getElementById("block8").innerHTML = `<h3>Growing jobs</h3>
+    <div class="stat-big" style="color:${outlookColor(10, 1)}">${(growing / 1e6).toFixed(1)}M</div>
+    <div class="stat-label">positive outlook</div>`;
 }
 
 function updatePayStats(totalJobs) {
@@ -733,6 +740,7 @@ function updatePayStats(totalJobs) {
   document.getElementById("block7").innerHTML = `<h3>Total wages</h3>
     <div class="stat-big">$${(totalWages / 1e12).toFixed(1)}T</div>
     <div class="stat-label">annual</div>`;
+  document.getElementById("block8").innerHTML = "";
 }
 
 function updateEducationStats(totalJobs) {
@@ -783,6 +791,7 @@ function updateEducationStats(totalJobs) {
   document.getElementById("block7").innerHTML = `<h3>No degree / HS</h3>
     <div class="stat-big">${(noDeg / 1e6).toFixed(1)}M</div>
     <div class="stat-label">jobs, no degree required</div>`;
+  document.getElementById("block8").innerHTML = "";
 }
 
 function updateExposureStats(totalJobs) {
@@ -834,6 +843,7 @@ function updateExposureStats(totalJobs) {
   document.getElementById("block7").innerHTML = `<h3>Wages exposed</h3>
     <div class="stat-big" style="color:${exposureColor(8, 1)}">$${(wagesExposed / 1e12).toFixed(1)}T</div>
     <div class="stat-label">annual, in jobs scoring 7+</div>`;
+  document.getElementById("block8").innerHTML = "";
 }
 
 // ── Events ─────────────────────────────────────────────────────────────
