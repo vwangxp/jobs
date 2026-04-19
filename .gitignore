@@ -4,20 +4,37 @@ __pycache__/
 build/
 dist/
 wheels/
-*.egg-info
+*.egg-info/
 
 # Virtual environments
-.venv
+.venv/
 
 # Secrets
 .env
 
-# Parsed markdown (reproducible via process.py)
-pages/
+# Data directories (data is generated)
+data/html/
+data/pages/
+data/raw/
+data/processed/
 
-# Embeddings (unused in final visualization)
-embed.py
-embeddings.json
+# Site directory (site is generated)
+site/data.json
+
+# Progress tracking
+.pipeline_state.json
+
+# LLM prompt file (generated)
+prompt.md
+
+# BLS index page (downloaded)
+occupational_outlook_handbook.html
+
+# Legacy scripts (moved to garbage/)
+garbage/
+
+# Test cache
+.pytest_cache/
 
 # macOS
 .DS_Store

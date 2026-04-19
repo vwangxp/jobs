@@ -19,11 +19,11 @@ The repo includes scrapers, parsers, and a pipeline for writing custom LLM promp
 
 ## Data pipeline
 
-1. **Scrape** (`scrape.py`) — Playwright (non-headless, BLS blocks bots) downloads raw HTML for all 342 occupation pages into `html/`.
-2. **Parse** (`parse_detail.py`, `process.py`) — BeautifulSoup converts raw HTML into clean Markdown files in `pages/`.
-3. **Tabulate** (`make_csv.py`) — Extracts structured fields (pay, education, job count, growth outlook, SOC code) into `occupations.csv`.
-4. **Score** (`score.py`) — Sends each occupation's Markdown description to an LLM with a scoring rubric. Each occupation gets an AI Exposure score from 0-10 with a rationale. Results saved to `scores.json`. Fork this to write your own prompts.
-5. **Build site data** (`build_site_data.py`) — Merges CSV stats and AI exposure scores into a compact `site/data.json` for the frontend.
+1. **Scrape** (`bls.py`) — Playwright (non-headless, BLS blocks bots) downloads raw HTML for all 342 occupation pages into `data/html/`.
+2. **Parse** (`html_parser.py`) — BeautifulSoup converts raw HTML into clean Markdown files in `data/pages/`.
+3. **Tabulate** (`runner.py`) — Extracts structured fields (pay, education, job count, growth outlook, SOC code) into `data/processed/occupations.csv`.
+4. **Score** (`llm_scorer.py`) — Sends each occupation's Markdown description to an LLM with a scoring rubric. Each occupation gets an AI Exposure score from 0-10 with a rationale. Results saved to `data/processed/scores.json`. Fork this to write your own prompts.
+5. **Build site data** (`runner.py`) — Merges CSV stats and AI exposure scores into a compact `site/data.json` for the frontend.
 6. **Website** (`site/index.html`) — Interactive treemap visualization with four color layers: BLS Outlook, Median Pay, Education, and Digital AI Exposure.
 
 ## Key files
@@ -44,9 +44,16 @@ The repo includes scrapers, parsers, and a pipeline for writing custom LLM promp
 
 ## Setup
 
-```
+```bash
+# Install dependencies
 uv sync
+
+# Install Playwright browser
 uv run playwright install chromium
+
+# Set up API key
+cp .env.example .env
+# Edit .env and add your OPENROUTER_API_KEY
 ```
 
 Requires an OpenRouter API key in `.env`:
@@ -55,6 +62,32 @@ OPENROUTER_API_KEY=your_key_here
 ```
 
 ## Usage
+
+The refactored pipeline uses a unified CLI interface:
+
+```bash
+# Run complete pipeline
+uv run python -m jobs.cli all
+
+# Run individual steps
+uv run python -m jobs.cli scrape              # Scrape BLS pages
+uv run python -m jobs.cli parse               # Parse HTML to Markdown
+uv run python -m jobs.cli csv                 # Generate CSV summary
+uv run python -m jobs.cli score               # Score AI exposure
+uv run python -m jobs.cli build               # Build site data
+
+# Check data status
+uv run python -m jobs.cli status
+
+# Run with options
+uv run python -m jobs.cli scrape --start 0 --end 10  # Scrape first 10
+uv run python -m jobs.cli scrape --force             # Re-scrape all
+uv run python -m jobs.cli score --model google/gemini-3-flash-preview
+```
+
+### Legacy Scripts
+
+The original scripts are still available for backward compatibility:
 
 ```bash
 # Scrape BLS pages (only needed once, results are cached in html/)
