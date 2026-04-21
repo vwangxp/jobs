@@ -31,10 +31,13 @@ prompt.md
 occupational_outlook_handbook.html
 
 # Legacy scripts (moved to garbage/)
-garbage/
+old_py/
 
 # Test cache
 .pytest_cache/
 
 # macOS
 .DS_Store
+
+# extra
+ppt*.md

@@ -3,7 +3,8 @@
     "allow": [
       "Bash(uv run *)",
       "Bash(PYTHONPATH=src uv run *)",
-      "Bash(uv sync *)"
+      "Bash(uv sync *)",
+      "Bash(python3 *)"
     ]
   }
 }

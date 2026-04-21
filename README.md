@@ -91,19 +91,19 @@ The original scripts are still available for backward compatibility:
 
 ```bash
 # Scrape BLS pages (only needed once, results are cached in html/)
-uv run python scrape.py
+uv run python old_py/scrape.py
 
 # Generate Markdown from HTML
-uv run python process.py
+uv run python old_py/process.py
 
 # Generate CSV summary
-uv run python make_csv.py
+uv run python old_py/make_csv.py
 
 # Score AI exposure (uses OpenRouter API)
-uv run python score.py
+uv run python old_py/score.py
 
 # Build website data
-uv run python build_site_data.py
+uv run python old_py/build_site_data.py
 
 # Serve the site locally
 cd site && python -m http.server 8000

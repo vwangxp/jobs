@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>US Job Market Visualizer</title>
+<title>美国就业市场可视化</title>
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -220,11 +220,11 @@ canvas#canvas {
 <div id="wrapper">
 <div id="header">
   <div class="intro">
-    <h1>US Job Market Visualizer <a href="https://github.com/karpathy/jobs">GitHub</a></h1>
-    <p>This is a research tool that visualizes <b>342 occupations</b> from the <a href="https://www.bls.gov/ooh/">Bureau of Labor Statistics Occupational Outlook Handbook</a>, covering <b>143M jobs</b> across the US economy. Each rectangle's <b>area</b> is proportional to total employment. <b>Color</b> shows the selected metric &mdash; toggle between BLS projected growth outlook, median pay, education requirements, and AI exposure. Click any tile to view its full BLS page. This is not a report, a paper, or a serious economic publication &mdash; it is a development tool for exploring BLS data visually.</p>
-    <p><b>LLM-powered coloring:</b> The <a href="https://github.com/karpathy/jobs">source code</a> includes scrapers, parsers, and a pipeline for writing custom LLM prompts to score and color occupations by any criteria. You write a prompt, the LLM scores each occupation, and the treemap colors accordingly. The "Digital AI Exposure" option is one example &mdash; it estimates how much current AI (which is primarily digital) will reshape each occupation. But you could write a different prompt for any question &mdash; e.g. exposure to humanoid robotics, offshoring risk, climate impact &mdash; and re-run the pipeline to get a different coloring.</p>
+    <h1>美国就业市场可视化 <a href="https://github.com/karpathy/jobs">GitHub</a></h1>
+    <p>这是一个研究工具，用于可视化来自<a href="https://www.bls.gov/ooh/">美国劳工统计局职业前景手册</a>的<b>342个职业</b>，涵盖美国经济中的<b>1.43亿个职位</b>。每个矩形的<b>面积</b>与总就业人数成正比。<b>颜色</b>显示所选指标——可在BLS预测增长前景、中位薪资、教育要求和AI暴露之间切换。点击任何方块可查看其完整的BLS页面。这不是一份报告、论文或严肃的经济出版物——它是一个用于可视化探索BLS数据的开发工具。</p>
+    <p><b>LLM驱动的着色：</b> <a href="https://github.com/karpathy/jobs">源代码</a>包括爬虫、解析器和管道，用于编写自定义LLM提示词，根据任何标准对职业进行评分和着色。您编写提示词，LLM对每个职业进行评分，树状图相应着色。"数字AI暴露"选项就是一个例子——它估计当前AI（主要是数字AI）将如何重塑每个职业。但您可以为任何问题编写不同的提示词——例如对人形机器人的暴露、外包风险、气候影响——并重新运行管道以获得不同的着色。</p>
     <details>
-      <summary>View the Digital AI Exposure scoring prompt (example)</summary>
+      <summary>查看数字AI暴露评分提示词（示例）</summary>
       <div class="prompt-box">You are an expert analyst evaluating how exposed different occupations are to AI. You will be given a detailed description of an occupation from the Bureau of Labor Statistics.
 
 Rate the occupation's overall AI Exposure on a scale from 0 to 10.
@@ -250,36 +250,36 @@ Use these anchors to calibrate your score:
 Respond with ONLY a JSON object in this exact format, no other text:
 {"exposure": &lt;0-10&gt;, "rationale": "&lt;2-3 sentences explaining the key factors&gt;"}</div>
     </details>
-    <p><b>Caveat on Digital AI Exposure scores:</b> These are rough LLM estimates, not rigorous predictions. A high score does not predict the job will disappear. Software developers score 9/10 because AI is transforming their work &mdash; but demand for software could easily <em>grow</em> as each developer becomes more productive. The score does not account for demand elasticity, latent demand, regulatory barriers, or social preferences for human workers. Many high-exposure jobs will be reshaped, not replaced.</p>
+    <p><b>数字AI暴露评分的说明：</b> 这些是粗略的LLM估计，不是严格的预测。高分并不预测该职业会消失。软件开发人员得分为9/10，因为AI正在改变他们的工作——但随着每个开发人员变得更有生产力，对软件的需求可能会轻松<em>增长</em>。该评分不考虑需求弹性、潜在需求、监管障碍或对人类工人的社会偏好。许多高暴露职业将被重塑，而不是被取代。</p>
   </div>
 
   <div class="controls-row">
     <div class="stat-section">
-      <h3>Layer</h3>
+      <h3>图层</h3>
       <div class="color-toggle" id="colorToggle">
-        <button data-mode="outlook" class="active">BLS Outlook</button>
-        <button data-mode="pay">Median Pay</button>
-        <button data-mode="education">Education</button>
-        <button data-mode="exposure">Digital AI Exposure</button>
+        <button data-mode="outlook" class="active">BLS前景</button>
+        <button data-mode="pay">中位薪资</button>
+        <button data-mode="education">教育要求</button>
+        <button data-mode="exposure">数字AI暴露</button>
       </div>
     </div>
     <div class="stat-section">
-      <h3>Theme</h3>
+      <h3>主题</h3>
       <div class="color-toggle" id="themeToggle">
-        <button data-theme="dark">Dark</button>
-        <button data-theme="light" class="active">Light</button>
+        <button data-theme="dark">深色</button>
+        <button data-theme="light" class="active">浅色</button>
       </div>
     </div>
     <div class="gradient-legend">
-      <span id="legendLow">Declining</span>
+      <span id="legendLow">衰退</span>
       <canvas id="gradientLegend" width="80" height="8"></canvas>
-      <span id="legendHigh">Growing</span>
+      <span id="legendHigh">增长</span>
     </div>
   </div>
 
   <div class="stats-row">
     <div class="stat-section">
-      <h3>Total jobs</h3>
+      <h3>总职位数</h3>
       <div class="stat-big" id="statTotalJobs">&mdash;</div>
     </div>
     <div class="stat-section" id="block2"></div>
@@ -656,9 +656,9 @@ function updateOutlookStats(totalJobs) {
   let wS = 0, wC = 0;
   for (const d of data) { if (d.outlook != null && d.jobs) { wS += d.outlook * d.jobs; wC += d.jobs; } }
   const avg = wC > 0 ? wS / wC : 0;
-  document.getElementById("block2").innerHTML = `<h3>Avg. outlook</h3>
+  document.getElementById("block2").innerHTML = `<h3>平均前景</h3>
     <div class="stat-big"><span style="color:${outlookColor(avg, 1)}">${avg > 0 ? "+" : ""}${avg.toFixed(1)}%</span></div>
-    <div class="stat-label">job-weighted</div>`;
+    <div class="stat-label">按职位加权</div>`;
 
   // Histogram: jobs by outlook bucket
   const buckets = [
@@ -668,7 +668,7 @@ function updateOutlookStats(totalJobs) {
   const histJobs = buckets.map(() => 0);
   for (const d of data) { if (d.outlook != null && d.jobs) { const i = buckets.findIndex(b => d.outlook >= b.lo && d.outlook <= b.hi); if (i >= 0) histJobs[i] += d.jobs; } }
   const maxH = Math.max(...histJobs);
-  document.getElementById("block3").innerHTML = `<h3>Jobs by outlook</h3>
+  document.getElementById("block3").innerHTML = `<h3>按前景分布的职位</h3>
     <div class="histogram">${histJobs.map((c, i) => `<div class="bar" style="height:${Math.max(2, maxH > 0 ? c / maxH * 100 : 0)}%;background:${outlookColor(buckets[i].mid, 0.7)}"></div>`).join("")}</div>
     <div class="hist-labels"><span>&lt;0%</span><span>5%</span><span>15%+</span></div>`;
 
@@ -678,18 +678,18 @@ function updateOutlookStats(totalJobs) {
     for (const d of data) { if (d.outlook != null && d.jobs && d.outlook >= t.min && d.outlook <= t.max) jobs += d.jobs; }
     return { ...t, jobs, color: outlookColor((t.min === -Infinity ? -8 : t.max === Infinity ? 20 : (t.min + t.max) / 2), 1) };
   });
-  document.getElementById("block4").innerHTML = `<h3>Outlook tiers</h3><div class="tier-bar">${renderTiers(tiers, totalJobs)}</div>`;
+  document.getElementById("block4").innerHTML = `<h3>前景分层</h3><div class="tier-bar">${renderTiers(tiers, totalJobs)}</div>`;
 
   // Cross: outlook by pay
   const byPay = weightedAvgByGroups(PAY_BANDS, (d, g) => d.pay != null && d.pay >= g.min && d.pay < g.max, d => d.outlook);
-  document.getElementById("block5").innerHTML = `<h3>Outlook by pay</h3><div class="hbar-chart">${renderHbars(byPay.map(g => ({
+  document.getElementById("block5").innerHTML = `<h3>按薪资的前景</h3><div class="hbar-chart">${renderHbars(byPay.map(g => ({
     label: g.label, val: (g.avg > 0 ? "+" : "") + g.avg.toFixed(1) + "%",
     pct: Math.max(0, Math.min(100, (g.avg + 10) / 30 * 100)), color: outlookColor(g.avg, 0.8)
   })))}</div>`;
 
   // Cross: outlook by education
   const byEdu = weightedAvgByGroups(EDU_GROUPS, (d, g) => g.match.includes(d.education), d => d.outlook);
-  document.getElementById("block6").innerHTML = `<h3>Outlook by education</h3><div class="hbar-chart">${renderHbars(byEdu.map(g => ({
+  document.getElementById("block6").innerHTML = `<h3>按教育的前景</h3><div class="hbar-chart">${renderHbars(byEdu.map(g => ({
     label: g.label, val: (g.avg > 0 ? "+" : "") + g.avg.toFixed(1) + "%",
     pct: Math.max(0, Math.min(100, (g.avg + 10) / 30 * 100)), color: outlookColor(g.avg, 0.8)
   })))}</div>`;
@@ -697,14 +697,14 @@ function updateOutlookStats(totalJobs) {
   // Impact: declining jobs
   let declining = 0;
   for (const d of data) { if (d.outlook != null && d.outlook < 0 && d.jobs) declining += d.jobs; }
-  document.getElementById("block7").innerHTML = `<h3>Declining jobs</h3>
+  document.getElementById("block7").innerHTML = `<h3>衰退职位</h3>
     <div class="stat-big" style="color:${outlookColor(-5, 1)}">${(declining / 1e6).toFixed(1)}M</div>
     <div class="stat-label">negative outlook</div>`;
 
   // Impact: growing jobs
   let growing = 0;
   for (const d of data) { if (d.outlook != null && d.outlook > 0 && d.jobs) growing += d.jobs; }
-  document.getElementById("block8").innerHTML = `<h3>Growing jobs</h3>
+  document.getElementById("block8").innerHTML = `<h3>增长职位</h3>
     <div class="stat-big" style="color:${outlookColor(10, 1)}">${(growing / 1e6).toFixed(1)}M</div>
     <div class="stat-label">positive outlook</div>`;
 }
@@ -713,7 +713,7 @@ function updatePayStats(totalJobs) {
   let wS = 0, wC = 0;
   for (const d of data) { if (d.pay != null && d.jobs) { wS += d.pay * d.jobs; wC += d.jobs; } }
   const avg = wC > 0 ? wS / wC : 0;
-  document.getElementById("block2").innerHTML = `<h3>Avg. pay</h3>
+  document.getElementById("block2").innerHTML = `<h3>平均薪资</h3>
     <div class="stat-big"><span style="color:${payColor(avg, 1)}">$${Math.round(avg / 1000)}K</span></div>
     <div class="stat-label">job-weighted</div>`;
 
@@ -725,7 +725,7 @@ function updatePayStats(totalJobs) {
   const histJobs = buckets.map(() => 0);
   for (const d of data) { if (d.pay != null && d.jobs) { const i = buckets.findIndex(b => d.pay >= b.lo && d.pay < b.hi); if (i >= 0) histJobs[i] += d.jobs; } }
   const maxH = Math.max(...histJobs);
-  document.getElementById("block3").innerHTML = `<h3>Jobs by pay</h3>
+  document.getElementById("block3").innerHTML = `<h3>按薪资分布的职位</h3>
     <div class="histogram">${histJobs.map((c, i) => `<div class="bar" style="height:${Math.max(2, maxH > 0 ? c / maxH * 100 : 0)}%;background:${payColor(buckets[i].mid, 0.7)}"></div>`).join("")}</div>
     <div class="hist-labels"><span>$30K</span><span>$65K</span><span>$100K+</span></div>`;
 
@@ -735,11 +735,11 @@ function updatePayStats(totalJobs) {
     for (const d of data) { if (d.pay != null && d.jobs && d.pay >= t.min && d.pay < t.max) jobs += d.jobs; }
     return { ...t, label: t.label, jobs, color: payColor(t.max === Infinity ? 130000 : (t.min + t.max) / 2, 1) };
   });
-  document.getElementById("block4").innerHTML = `<h3>Pay tiers</h3><div class="tier-bar">${renderTiers(tiers, totalJobs)}</div>`;
+  document.getElementById("block4").innerHTML = `<h3>薪资分层</h3><div class="tier-bar">${renderTiers(tiers, totalJobs)}</div>`;
 
   // Cross: pay by education
   const byEdu = weightedAvgByGroups(EDU_GROUPS, (d, g) => g.match.includes(d.education), d => d.pay);
-  document.getElementById("block5").innerHTML = `<h3>Pay by education</h3><div class="hbar-chart">${renderHbars(byEdu.map(g => ({
+  document.getElementById("block5").innerHTML = `<h3>按教育的薪资</h3><div class="hbar-chart">${renderHbars(byEdu.map(g => ({
     label: g.label, val: "$" + Math.round(g.avg / 1000) + "K",
     pct: Math.max(0, Math.min(100, (Math.log(Math.max(25000, g.avg)) - Math.log(25000)) / (Math.log(250000) - Math.log(25000)) * 100)),
     color: payColor(g.avg, 0.8)
@@ -747,7 +747,7 @@ function updatePayStats(totalJobs) {
 
   // Cross: pay by outlook tier
   const byOl = weightedAvgByGroups(OUTLOOK_TIERS, (d, g) => d.outlook != null && d.outlook >= g.min && d.outlook <= g.max, d => d.pay);
-  document.getElementById("block6").innerHTML = `<h3>Pay by outlook</h3><div class="hbar-chart">${renderHbars(byOl.map(g => ({
+  document.getElementById("block6").innerHTML = `<h3>前景分层</h3><div class="hbar-chart">${renderHbars(byOl.map(g => ({
     label: g.label.replace(/ \(.*/, ""), val: "$" + Math.round(g.avg / 1000) + "K",
     pct: Math.max(0, Math.min(100, (Math.log(Math.max(25000, g.avg)) - Math.log(25000)) / (Math.log(250000) - Math.log(25000)) * 100)),
     color: payColor(g.avg, 0.8)
@@ -756,21 +756,21 @@ function updatePayStats(totalJobs) {
   // Impact: total wages
   let totalWages = 0;
   for (const d of data) { if (d.pay != null && d.jobs) totalWages += d.pay * d.jobs; }
-  document.getElementById("block7").innerHTML = `<h3>Total wages</h3>
+  document.getElementById("block7").innerHTML = `<h3>总薪资</h3>
     <div class="stat-big">$${(totalWages / 1e12).toFixed(1)}T</div>
-    <div class="stat-label">annual</div>`;
+    <div class="stat-label">年度</div>`;
   document.getElementById("block8").innerHTML = "";
 }
 
 function updateEducationStats(totalJobs) {
-  // Headline: % Bachelor's+
+  // 标题：学士及以上学历占比
   let bsJobs = 0;
   for (const d of data) {
     if (d.jobs && ["Bachelor's degree", "Master's degree", "Doctoral or professional degree"].includes(d.education)) bsJobs += d.jobs;
   }
-  document.getElementById("block2").innerHTML = `<h3>Bachelor's+</h3>
+  document.getElementById("block2").innerHTML = `<h3>学士及以上</h3>
     <div class="stat-big"><span style="color:${eduColor(5, 1)}">${(bsJobs / totalJobs * 100).toFixed(0)}%</span></div>
-    <div class="stat-label">of all jobs</div>`;
+    <div class="stat-label">占所有职位</div>`;
 
   // Histogram: jobs by education group
   const groups = EDU_GROUPS.map((g, i) => {
@@ -779,17 +779,17 @@ function updateEducationStats(totalJobs) {
     return { ...g, jobs, idx: i };
   });
   const maxH = Math.max(...groups.map(g => g.jobs));
-  document.getElementById("block3").innerHTML = `<h3>Jobs by education</h3>
+  document.getElementById("block3").innerHTML = `<h3>按教育分布的职位</h3>
     <div class="histogram">${groups.map(g => `<div class="bar" style="height:${Math.max(2, maxH > 0 ? g.jobs / maxH * 100 : 0)}%;background:${eduColor(g.idx * 2, 0.7)}"></div>`).join("")}</div>
-    <div class="hist-labels"><span>HS</span><span>BS</span><span>PhD</span></div>`;
+    <div class="hist-labels"><span>高中</span><span>学士</span><span>博士</span></div>`;
 
   // Tier breakdown (same groups with counts)
   const tiers = groups.map((g, i) => ({ label: g.label, jobs: g.jobs, color: eduColor(i * 2, 1) }));
-  document.getElementById("block4").innerHTML = `<h3>Education tiers</h3><div class="tier-bar">${renderTiers(tiers, totalJobs)}</div>`;
+  document.getElementById("block4").innerHTML = `<h3>教育分层</h3><div class="tier-bar">${renderTiers(tiers, totalJobs)}</div>`;
 
   // Cross: avg pay by education
   const payByEdu = weightedAvgByGroups(EDU_GROUPS, (d, g) => g.match.includes(d.education), d => d.pay);
-  document.getElementById("block5").innerHTML = `<h3>Avg pay by education</h3><div class="hbar-chart">${renderHbars(payByEdu.map(g => ({
+  document.getElementById("block5").innerHTML = `<h3>按教育的平均薪资</h3><div class="hbar-chart">${renderHbars(payByEdu.map(g => ({
     label: g.label, val: "$" + Math.round(g.avg / 1000) + "K",
     pct: Math.max(0, Math.min(100, (Math.log(Math.max(25000, g.avg)) - Math.log(25000)) / (Math.log(250000) - Math.log(25000)) * 100)),
     color: payColor(g.avg, 0.8)
@@ -797,7 +797,7 @@ function updateEducationStats(totalJobs) {
 
   // Cross: avg outlook by education
   const olByEdu = weightedAvgByGroups(EDU_GROUPS, (d, g) => g.match.includes(d.education), d => d.outlook);
-  document.getElementById("block6").innerHTML = `<h3>Avg outlook by education</h3><div class="hbar-chart">${renderHbars(olByEdu.map(g => ({
+  document.getElementById("block6").innerHTML = `<h3>按教育的平均前景</h3><div class="hbar-chart">${renderHbars(olByEdu.map(g => ({
     label: g.label, val: (g.avg > 0 ? "+" : "") + g.avg.toFixed(1) + "%",
     pct: Math.max(0, Math.min(100, (g.avg + 10) / 30 * 100)), color: outlookColor(g.avg, 0.8)
   })))}</div>`;
@@ -807,9 +807,9 @@ function updateEducationStats(totalJobs) {
   for (const d of data) {
     if (d.jobs && ["No formal educational credential", "High school diploma or equivalent"].includes(d.education)) noDeg += d.jobs;
   }
-  document.getElementById("block7").innerHTML = `<h3>No degree / HS</h3>
+  document.getElementById("block7").innerHTML = `<h3>无学位/高中</h3>
     <div class="stat-big">${(noDeg / 1e6).toFixed(1)}M</div>
-    <div class="stat-label">jobs, no degree required</div>`;
+    <div class="stat-label">无需学位的职位</div>`;
   document.getElementById("block8").innerHTML = "";
 }
 
@@ -817,15 +817,15 @@ function updateExposureStats(totalJobs) {
   let wS = 0, wC = 0;
   for (const d of data) { if (d.exposure != null && d.jobs) { wS += d.exposure * d.jobs; wC += d.jobs; } }
   const avg = wC > 0 ? wS / wC : 0;
-  document.getElementById("block2").innerHTML = `<h3>Avg. exposure</h3>
+  document.getElementById("block2").innerHTML = `<h3>平均暴露</h3>
     <div class="stat-big"><span style="color:${exposureColor(avg, 1)}">${avg.toFixed(1)}</span></div>
-    <div class="stat-label">job-weighted, 0\u201310</div>`;
+    <div class="stat-label">按职位加权, 0-10</div>`;
 
   // Histogram
   const histogram = new Array(11).fill(0);
   for (const d of data) { if (d.exposure != null && d.jobs) histogram[d.exposure] += d.jobs; }
   const maxH = Math.max(...histogram);
-  document.getElementById("block3").innerHTML = `<h3>Jobs by exposure</h3>
+  document.getElementById("block3").innerHTML = `<h3>按暴露分布的职位</h3>
     <div class="histogram">${histogram.map((c, i) => `<div class="bar" style="height:${Math.max(2, maxH > 0 ? c / maxH * 100 : 0)}%;background:${exposureColor(i, 0.7)}"></div>`).join("")}</div>
     <div class="hist-labels"><span>0</span><span>5</span><span>10</span></div>`;
 
@@ -842,24 +842,24 @@ function updateExposureStats(totalJobs) {
     for (const d of data) { if (d.exposure != null && d.jobs && d.exposure >= t.lo && d.exposure <= t.hi) jobs += d.jobs; }
     return { ...t, jobs, color: exposureColor(t.mid, 1) };
   });
-  document.getElementById("block4").innerHTML = `<h3>Exposure tiers</h3><div class="tier-bar">${renderTiers(tiers, totalJobs)}</div>`;
+  document.getElementById("block4").innerHTML = `<h3>暴露分层</h3><div class="tier-bar">${renderTiers(tiers, totalJobs)}</div>`;
 
   // Cross: exposure by pay
   const byPay = weightedAvgByGroups(PAY_BANDS, (d, g) => d.pay != null && d.pay >= g.min && d.pay < g.max, d => d.exposure);
-  document.getElementById("block5").innerHTML = `<h3>Exposure by pay</h3><div class="hbar-chart">${renderHbars(byPay.map(g => ({
+  document.getElementById("block5").innerHTML = `<h3>按薪资的暴露</h3><div class="hbar-chart">${renderHbars(byPay.map(g => ({
     label: g.label, val: g.avg.toFixed(1), pct: g.avg / 10 * 100, color: exposureColor(g.avg, 0.8)
   })))}</div>`;
 
   // Cross: exposure by education
   const byEdu = weightedAvgByGroups(EDU_GROUPS, (d, g) => g.match.includes(d.education), d => d.exposure);
-  document.getElementById("block6").innerHTML = `<h3>Exposure by education</h3><div class="hbar-chart">${renderHbars(byEdu.map(g => ({
+  document.getElementById("block6").innerHTML = `<h3>按教育的暴露</h3><div class="hbar-chart">${renderHbars(byEdu.map(g => ({
     label: g.label, val: g.avg.toFixed(1), pct: g.avg / 10 * 100, color: exposureColor(g.avg, 0.8)
   })))}</div>`;
 
   // Impact: wages exposed
   let wagesExposed = 0;
   for (const d of data) { if (d.exposure != null && d.exposure >= 7 && d.jobs && d.pay) wagesExposed += d.jobs * d.pay; }
-  document.getElementById("block7").innerHTML = `<h3>Wages exposed</h3>
+  document.getElementById("block7").innerHTML = `<h3>暴露的工资</h3>
     <div class="stat-big" style="color:${exposureColor(8, 1)}">$${(wagesExposed / 1e12).toFixed(1)}T</div>
     <div class="stat-label">annual, in jobs scoring 7+</div>`;
   document.getElementById("block8").innerHTML = "";
@@ -880,10 +880,10 @@ function resize() { dpr = window.devicePixelRatio || 1; layout(); draw(); }
 // ── Legend gradient ────────────────────────────────────────────────────
 
 const LEGEND_CONFIG = {
-  exposure:  { low: "Low", high: "High" },
-  outlook:   { low: "Declining", high: "Growing" },
+  exposure:  { low: "低", high: "高" },
+  outlook:   { low: "衰退", high: "增长" },
   pay:       { low: "$25K", high: "$250K" },
-  education: { low: "No degree", high: "Doctoral" },
+  education: { low: "无学位", high: "博士" },
 };
 
 function drawGradientLegend() {

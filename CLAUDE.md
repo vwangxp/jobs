@@ -26,13 +26,13 @@ BLS Website → bls.py → data/html/ → html_parser.py → data/pages/ → run
 |-----------|--------|---------|
 | **Configuration** | `config.py` | Centralized settings management with Pydantic |
 | **Data Models** | `occupation.py` | Pydantic models with validation |
-| **Utilities** | `io.py`, `soup.py`, `web.py` | Reusable I/O, parsing, and web functions |
+| **Utilities** | `io.py`, `soup.py`, `web.py`, `progress.py`, `validator.py` | Reusable I/O, parsing, web, progress tracking, and validation functions |
 | **Scraper** | `bls.py` | Downloads raw HTML from BLS OOH using Playwright |
 | **Parser** | `html_parser.py` | Converts HTML to clean Markdown |
 | **Scorer** | `llm_scorer.py` | Uses LLM to rate AI exposure (0-10) for each occupation |
 | **Pipeline** | `runner.py` | Orchestrates the complete data processing pipeline |
 | **CLI** | `cli.py` | Unified command-line interface |
-| **Prompt Generator** | `make_prompt.py` | Creates single-file LLM prompt with all data |
+| **Prompt Generator** | `old_py/make_prompt.py` | Creates single-file LLM prompt with all data (legacy) |
 | **Visualization** | `site/index.html` | Interactive treemap frontend |
 
 ## Data Sources
@@ -137,31 +137,33 @@ PYTHONPATH=src uv run python -m jobs.cli test
 # Run with options
 PYTHONPATH=src uv run python -m jobs.cli scrape --start 0 --end 10  # Scrape first 10
 PYTHONPATH=src uv run python -m jobs.cli scrape --force             # Re-scrape all
+PYTHONPATH=src uv run python -m jobs.cli scrape --delay 2.0          # 2 second delay between requests
 PYTHONPATH=src uv run python -m jobs.cli score --model google/gemini-3-flash-preview
+PYTHONPATH=src uv run python -m jobs.cli score --delay 1.0           # 1 second delay between requests
 ```
 
 ### Legacy Scripts
 
-The original scripts are available in `garbage/` for reference:
+The original scripts are available in `old_py/` for reference:
 
 ```bash
 # 1. Scrape BLS pages (cached in data/html/)
-uv run python garbage/scrape.py
+uv run python old_py/scrape.py
 
 # 2. Convert HTML to Markdown
-uv run python garbage/process.py
+uv run python old_py/process.py
 
 # 3. Generate CSV summary
-uv run python garbage/make_csv.py
+uv run python old_py/make_csv.py
 
 # 4. Score AI exposure (requires API key)
-uv run python garbage/score.py
+uv run python old_py/score.py
 
 # 5. Build website data
-uv run python garbage/build_site_data.py
+uv run python old_py/build_site_data.py
 
 # 6. Generate LLM prompt
-uv run python garbage/make_prompt.py
+uv run python old_py/make_prompt.py
 
 # 7. Serve locally
 cd site && python -m http.server 8000
@@ -238,7 +240,7 @@ jobs/
 │   ├── test_utils.py       # Utility tests
 │   ├── test_validator.py     # Validator tests
 │   └── test_progress.py     # Progress tracker tests
-└── garbage/                 # Legacy scripts (backward compatibility)
+└── old_py/                  # Legacy scripts (backward compatibility)
     ├── build_site_data.py
     ├── make_csv.py
     ├── make_prompt.py
@@ -267,7 +269,8 @@ jobs/
 - OpenRouter API is used for LLM scoring
 - Default model: `google/gemini-3-flash-preview`
 - Can be changed via `--model` flag
-- Rate limiting: default 0.5s delay between requests
+- Rate limiting: default 0.5s delay between requests (configurable via `--delay`)
+- Request timeout: 15 seconds
 
 ## Testing
 
@@ -292,7 +295,7 @@ PYTHONPATH=src uv run python -m jobs.cli test
 - `tests/test_models.py`: Pydantic model validation and serialization
 - `tests/test_parser.py`: HTML parser tests
 - `tests/test_scorer.py`: LLM scorer tests
-- `tests/test_utils.py`: Utility function tests (I/O, text cleaning, etc.)
+- `tests/test_utils.py`: Utility function tests (I/O, text cleaning, safe_find, etc.)
 - `tests/test_validator.py`: Data validation tests
 - `tests/test_progress.py`: Progress tracking tests
 
