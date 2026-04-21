@@ -84,27 +84,3 @@ uv run python -m jobs.cli scrape --start 0 --end 10  # Scrape first 10
 uv run python -m jobs.cli scrape --force             # Re-scrape all
 uv run python -m jobs.cli score --model google/gemini-3-flash-preview
 ```
-
-### Legacy Scripts
-
-The original scripts are still available for backward compatibility:
-
-```bash
-# Scrape BLS pages (only needed once, results are cached in html/)
-uv run python old_py/scrape.py
-
-# Generate Markdown from HTML
-uv run python old_py/process.py
-
-# Generate CSV summary
-uv run python old_py/make_csv.py
-
-# Score AI exposure (uses OpenRouter API)
-uv run python old_py/score.py
-
-# Build website data
-uv run python old_py/build_site_data.py
-
-# Serve the site locally
-cd site && python -m http.server 8000
-```
